@@ -19,6 +19,10 @@ function App() {
     setTodos(newTodos)
   }
 
+  const onAddTodo = (str) => {
+    setTodos([ ...todos, { text: str, status: false, id: Date.now() } ])
+  }
+
   const newTodos = todos.map((item) => {
     return  <TodoItem id={item.id} text={item.text} status={item.status} onDelete={onDelete} />
   })
@@ -26,7 +30,7 @@ function App() {
     <div className="App">
       <Header todoLength={4} todoDone={2} />
       <div className='content'>
-        <CreateTodo />
+        <CreateTodo onAddTodo={onAddTodo} />
         <div className='content__body'>
           {newTodos}
           {/* <TodoItem text="Купить новый мак" status={false} /> */}
