@@ -1,9 +1,11 @@
+import css from "./CreateTodo.module.css";
+
 
 const CreateTodo = () => {
   return (
-    <div>
-      <input type="text" />
-      <button>Add</button>
+    <div className={css.wrapper}>
+      <input type="text" placeholder="Enter some todo" />
+      <button>+Add</button>
     </div>
   );
 };

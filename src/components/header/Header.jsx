@@ -1,9 +1,14 @@
 import css from "./Header.module.css"
 
-const Header = () => {
+const Header = (props) => {
   return (
     <div className={css.wrapper}>
-        <h1 className={css.title}>Todos (2 / 4)</h1>
+        <h1 className={css.title}>Todos ({props.todoDone} / {props.todoLength})</h1>
+        <div>
+          <button>+plus</button>
+          <span>0</span>
+          <button>-minus</button>
+        </div>
     </div>
   )
 }
