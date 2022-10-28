@@ -1,15 +1,19 @@
 import css from "./TodoItem.module.css"
 
 const TodoItem = (props) => {
-  console.log(props);
+  
   const handleDelete = () => {
     props.onDelete(props.id)
+  }
+
+  const handleStatus = () => {
+    props.onStatus(props.id);
   }
   return (
     <div className={css.wrapper}>
       <label>
-        <input type="checkbox" checked={props.status} />
-        <span>{props.text}</span>
+        <input type="checkbox" checked={props.status} onChange={handleStatus} />
+        <span className={props.status ? css.todoDone : ''}>{props.text}</span>
       </label>
 
       <div>

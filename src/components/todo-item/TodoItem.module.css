@@ -19,3 +19,7 @@
     border-radius: 6px; 
     cursor: pointer;
 }
+
+.todoDone {
+    text-decoration: line-through;
+}

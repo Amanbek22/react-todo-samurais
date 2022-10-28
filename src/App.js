@@ -1,21 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import CreateTodo from './components/create-todo/CreateTodo';
 import Header from './components/header/Header';
 import TodoItem from './components/todo-item/TodoItem';
 
-const initialState = [
-  { text:  "Купить новый мак", status: false, id: 1},
-  { text:  "Купить новый мак 16", status: true, id: 2},
-  { text:  "Купить новый мак 16 M1", status: false, id: 3},
-]
+const initialState = JSON.parse(localStorage.getItem('todos')) || []
 function App() {
   const [todos, setTodos] = useState(initialState);
   
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   const onDelete = (id) => {
     const newTodos = todos.filter((item) => item.id !== id)
-    console.log(newTodos);
     setTodos(newTodos)
   }
 
@@ -23,17 +21,27 @@ function App() {
     setTodos([ ...todos, { text: str, status: false, id: Date.now() } ])
   }
 
+  const onStatusChange = (id) => {
+    const newArr = todos.map( (todo) => {
+      if(todo.id === id) {
+        return {...todo, status: !todo.status}
+      }
+      return todo
+    })
+    setTodos(newArr)
+  }
+
   const newTodos = todos.map((item) => {
-    return  <TodoItem id={item.id} text={item.text} status={item.status} onDelete={onDelete} />
+    return  <TodoItem key={item.id} id={item.id} text={item.text} status={item.status} onDelete={onDelete} onStatus={onStatusChange} />
   })
+  const todoCompletes = todos.reduce( (akk, item) =>  akk + Number(item.status) , 0)
   return (
     <div className="App">
-      <Header todoLength={4} todoDone={2} />
+      <Header todoLength={todos.length} todoDone={todoCompletes} />
       <div className='content'>
         <CreateTodo onAddTodo={onAddTodo} />
         <div className='content__body'>
           {newTodos}
-          {/* <TodoItem text="Купить новый мак" status={false} /> */}
         </div>
       </div>
     </div>
