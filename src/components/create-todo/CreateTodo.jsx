@@ -11,9 +11,8 @@ const CreateTodo = (props) => {
     setInpValue("")
   }
 
-  const handleInput = (event) => {
-    setInpValue(event.target.value)
-  }
+  const handleInput = (event) => setInpValue(event.target.value)
+  
   return (
     <form onSubmit={submit} className={css.wrapper}>
       <input value={inpValue} onChange={handleInput} type="text" placeholder="Enter some todo" />
