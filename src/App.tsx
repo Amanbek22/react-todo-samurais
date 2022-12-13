@@ -1,27 +1,33 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import CreateTodo from "./components/create-todo/CreateTodo";
 import Header from "./components/header/Header";
 import TodoItem from "./components/todo-item/TodoItem";
 
-const initialState = JSON.parse(localStorage.getItem("todos")) || [];
+interface TodoType {
+  text: string;
+  status: boolean;
+  id: string
+}
+
+const initialState = JSON.parse(localStorage.getItem("todos") as string) || [];
 function App() {
-  const [todos, setTodos] = useState(initialState);
+  const [todos, setTodos] = useState<TodoType[]>(initialState);
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
-  const onDelete = (id) => {
+  const onDelete = (id: string) => {
     const newTodos = todos.filter((item) => item.id !== id);
     setTodos(newTodos);
   };
 
-  const onAddTodo = (str) => {
-    setTodos([...todos, { text: str, status: false, id: Date.now() }]);
+  const onAddTodo = (str: string) => {
+    setTodos([...todos, { text: str, status: false, id: Date.now().toString() }]);
   };
 
-  const onStatusChange = (id) => {
+  const onStatusChange = (id: string) => {
     const newArr = todos.map((todo) => {
       if (todo.id === id) {
         return { ...todo, status: !todo.status };
@@ -31,7 +37,7 @@ function App() {
     setTodos(newArr);
   };
 
-  const onEdit = (id, newText) => {
+  const onEdit = (id:string, newText:string) => {
     const newArr = todos.map((todo) => {
       if (todo.id === id) {
         return { ...todo, text: newText };
