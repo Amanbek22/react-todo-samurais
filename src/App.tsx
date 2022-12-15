@@ -3,16 +3,19 @@ import "./App.css";
 import CreateTodo from "./components/create-todo/CreateTodo";
 import Header from "./components/header/Header";
 import TodoItem from "./components/todo-item/TodoItem";
+import { useSelector } from "react-redux";
 
 interface TodoType {
   text: string;
   status: boolean;
-  id: string
+  id: string;
 }
 
 const initialState = JSON.parse(localStorage.getItem("todos") as string) || [];
 function App() {
-  const [todos, setTodos] = useState<TodoType[]>(initialState);
+  const [_, setTodos] = useState<TodoType[]>(initialState);
+  const todos:TodoType[] = useSelector((state: any) => state.todo.data);
+  console.log("local todos:", todos);
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
@@ -21,10 +24,6 @@ function App() {
   const onDelete = (id: string) => {
     const newTodos = todos.filter((item) => item.id !== id);
     setTodos(newTodos);
-  };
-
-  const onAddTodo = (str: string) => {
-    setTodos([...todos, { text: str, status: false, id: Date.now().toString() }]);
   };
 
   const onStatusChange = (id: string) => {
@@ -37,7 +36,7 @@ function App() {
     setTodos(newArr);
   };
 
-  const onEdit = (id:string, newText:string) => {
+  const onEdit = (id: string, newText: string) => {
     const newArr = todos.map((todo) => {
       if (todo.id === id) {
         return { ...todo, text: newText };
@@ -47,7 +46,7 @@ function App() {
     setTodos(newArr);
   };
 
-  const newTodos = todos.map((item) => {
+  const newTodos = todos.map((item: TodoType) => {
     return (
       <TodoItem
         key={item.id}
@@ -68,7 +67,7 @@ function App() {
     <div className="App">
       <Header todoLength={todos.length} todoDone={todoCompletes} />
       <div className="content">
-        <CreateTodo onAddTodo={onAddTodo} />
+        <CreateTodo />
         <div className="content__body">{newTodos}</div>
       </div>
     </div>
