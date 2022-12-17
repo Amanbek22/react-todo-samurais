@@ -15,26 +15,10 @@ const initialState = JSON.parse(localStorage.getItem("todos") as string) || [];
 function App() {
   const [_, setTodos] = useState<TodoType[]>(initialState);
   const todos:TodoType[] = useSelector((state: any) => state.todo.data);
-  console.log("local todos:", todos);
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
-
-  const onDelete = (id: string) => {
-    const newTodos = todos.filter((item) => item.id !== id);
-    setTodos(newTodos);
-  };
-
-  const onStatusChange = (id: string) => {
-    const newArr = todos.map((todo) => {
-      if (todo.id === id) {
-        return { ...todo, status: !todo.status };
-      }
-      return todo;
-    });
-    setTodos(newArr);
-  };
 
   const onEdit = (id: string, newText: string) => {
     const newArr = todos.map((todo) => {
@@ -53,8 +37,6 @@ function App() {
         id={item.id}
         text={item.text}
         status={item.status}
-        onDelete={onDelete}
-        onStatus={onStatusChange}
         onEdit={onEdit}
       />
     );

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { todoAction } from "../../redux/todoSlice";
 // @ts-ignore
 import css from "./TodoItem.module.css";
 
@@ -6,21 +8,20 @@ interface PropsType {
   id: string;
   text: string;
   status: boolean;
-  onDelete: (id: string) => void;
-  onStatus: (id: string) => void;
   onEdit: (id: string, t: string) => void;
 }
 
 const TodoItem: React.FC<PropsType> = (props) => {
   const [isEdit, setEdit] = useState<boolean>(false);
   const [inp, setInp] = useState(props.text);
+  const dispatch = useDispatch();
 
   const handleDelete = () => {
-    props.onDelete(props.id);
+    dispatch(todoAction.onDelete(props.id));
   };
 
   const handleStatus = () => {
-    props.onStatus(props.id);
+    dispatch(todoAction.onStatusChange(props.id));
   };
 
   const handleEdit = () => {
@@ -28,7 +29,8 @@ const TodoItem: React.FC<PropsType> = (props) => {
   };
   const submit = (e: any) => {
     e.preventDefault();
-    props.onEdit(props.id, inp);
+    // props.onEdit(props.id, inp);
+    dispatch( todoAction.onEdit({ id: props.id, newText: inp }) )
     setEdit(false);
   };
 
